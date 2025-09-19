@@ -1,4 +1,4 @@
-import streamlit as st
+eimport streamlit as st
 
 # Import Selenium and WebDriver manager
 from selenium import webdriver
@@ -30,8 +30,15 @@ def scrape_dealer(dealer_url: str) -> list[str]:
     options.add_argument("--disable-gpu")
     options.add_argument("--no-sandbox")
     options.add_argument("--window-size=1920,1080")
+   # Instantiate the driver; webdriver manager will download the binary if necessary
     # Instantiate the driver; webdriver manager will download the binary if necessary
-    driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+    # New Selenium versions recommend passing a Service object instead of the driver path as the
+    # first positional argument. Without using Service, passing the driver path can conflict
+    # with other keyword arguments and raise errors like "got multiple values for argument 'options'".
+    from selenium.webdriver.chrome.service import Service
+    # Download the chromedriver binary via ChromeDriverManager and configure a Service
+    service = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=service, options=options)
     driver.get(dealer_url)
 
     # Try to accept cookie consent if the banner appears
