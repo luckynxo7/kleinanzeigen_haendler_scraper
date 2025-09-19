@@ -1,4 +1,4 @@
-eimport streamlit as st
+import streamlit as st
 
 # Import Selenium and WebDriver manager
 from selenium import webdriver
